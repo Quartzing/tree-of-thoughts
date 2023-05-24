@@ -19,9 +19,6 @@ class HuggingFaceLanguageModel(AbstractLanguageModel):
         # conversation_list = self.chatbot.get_conversation_list()
 
         # reference : https://www.promptingguide.ai/techniques/react
-        self.ReAct_prompt = ''
-        if enable_ReAct_prompting:
-            self.ReAct_prompt = "Write down your observations in format 'Observation:xxxx', then write down your thoughts in format 'Thoughts:xxxx'."
         
         self.strategy = strategy
         self.evaluation_strategy = evaluation_strategy
@@ -48,7 +45,8 @@ class HuggingFaceLanguageModel(AbstractLanguageModel):
         response = self.chatbot.chat(
             text=prompt,
             temperature=temperature)
-        print(response)
+        print("Raw response: ", response)
+
         return response
             
 
@@ -60,10 +58,13 @@ class HuggingFaceLanguageModel(AbstractLanguageModel):
         return text
 
     def generate_thoughts(self, state, k):
-        state_text = ' '.join(state)
+        # state_text = ' '.join(state)
+        state_text = state
         
-        prompt = f"Given the current state of reasoning: '{state_text}', generate {1} coherent thoughts to continue the reasoning process:"
-        prompt += self.ReAct_prompt
+        prompt = f'''Given the current state of reasoning: '{state_text}', generate {k} parallel possible next step plans to continue the reasoning process:
+        Write down your observations in format 'Observation:xxxx', then write down your plans in a list with bullet points.
+        At the end, re-organize all of the plans into a python list with the format: Python thoughts: [...]"
+        '''
     
         response = self.api_call_handler(prompt, 50, 0.5, k)
         thoughts = [self.choice2text_handler(choice) for choice in response.choices]
