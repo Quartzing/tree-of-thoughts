@@ -1,15 +1,19 @@
-from tree_of_thoughts.treeofthoughts import OpenAILanguageModel, CustomLanguageModel, TreeofThoughts, OptimizedOpenAILanguageModel, OptimizedTreeofThoughts
-
+from tree_of_thoughts.treeofthoughts import TreeofThoughts, OptimizedTreeofThoughts
+from tree_of_thoughts.openai_language_model import CustomLanguageModel, OptimizedOpenAILanguageModel, OpenAILanguageModel
+from tree_of_thoughts.huggingface_language_model import HuggingFaceLanguageModel
 use_v2 = False
-api_key=""
-api_base= "" # leave it blank if you simply use default openai api url
 
-if not use_v2:
-    #v1
-    model = OpenAILanguageModel(api_key=api_key, api_base=api_base)
-else:
-    #v2 parallel execution, caching, adaptive temperature
-    model = OptimizedOpenAILanguageModel(api_key=api_key, api_base=api_base)
+# api_key="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"
+# api_base= "" # leave it blank if you simply use default openai api url
+
+# if not use_v2:
+#     #v1
+#     model = OpenAILanguageModel(api_key=api_key, api_base=api_base)
+# else:
+#     #v2 parallel execution, caching, adaptive temperature
+#     model = OptimizedOpenAILanguageModel(api_key=api_key, api_base=api_base)
+
+model = HuggingFaceLanguageModel(cookie_path="cookies.json")
 
 #choose search algorithm('BFS' or 'DFS')
 search_algorithm = "BFS"
