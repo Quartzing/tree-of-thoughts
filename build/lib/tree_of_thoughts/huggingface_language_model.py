@@ -61,9 +61,9 @@ class HuggingFaceLanguageModel(AbstractLanguageModel):
         # state_text = ' '.join(state)
         state_text = state
         
-        prompt = f'''Given the current state of reasoning: '{state_text}', generate {k} parallel possible next step plans to continue the reasoning process.
-        Write down your observations in format 'Observation:xxxx', then write down your thoughts on how to solve it in a list with bullet points.
-        At the end, re-organize all of the thoughts into a python list as is, with the format: Python thoughts: [...]"
+        prompt = f'''Given the current state of reasoning: '{state_text}', generate {k} parallel possible next step plans to continue the reasoning process:
+        Write down your observations in format 'Observation:xxxx', then write down your plans in a list with bullet points.
+        At the end, re-organize all of the plans into a python list with the format: Python thoughts: [...]"
         '''
     
         response = self.api_call_handler(prompt, 50, 0.5, k)
